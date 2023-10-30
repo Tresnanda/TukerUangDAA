@@ -43,7 +43,7 @@ def tuker(dari, ke, nilai):
         #nilai_ubah = round(nilai_ubah // 10) * 5
     elif ke == 'IDR':
         pecahan_list = idr_list
-        nilai_ubah = round(nilai_ubah // 10000) * 10000
+        nilai_ubah = round(nilai_ubah // 5000) * 5000
     elif ke == 'AUD':
         pecahan_list = aud_list
     elif ke == 'CNY':
@@ -95,4 +95,4 @@ if st.button("Tukar"):
         if count > 1:
             st.text(f"{str(value)} {ke} x{count}")
         else:
-            st.text(str(value))
+            st.text(f"{str(value)} {ke}")
