@@ -6,7 +6,7 @@ def tuker2(dari, ke, nilai):
     nilai = int(nilai)
     response = requests.get(
         f"https://api.frankfurter.app/latest?amount={nilai}&from={dari}&to={ke}")
-    nilai_ubah = int(response.json()['rates'][ke])
+    nilai_ubah = float(response.json()['rates'][ke])
     return nilai_ubah
 
 def tuker(dari, ke, nilai):
@@ -23,7 +23,7 @@ def tuker(dari, ke, nilai):
     # nilai_ubah = int(response.json()['rates'][ke])
     # print(nilai_ubah)
     # print("")
-    nilai_ubah = tuker2(dari, ke, nilai)
+    nilai_ubah = int(tuker2(dari, ke, nilai))
 
     pecahan = []
     i = 0
