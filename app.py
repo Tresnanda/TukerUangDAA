@@ -3,7 +3,7 @@ import streamlit as st
 from collections import Counter
 
 def tuker2(dari, ke, nilai):
-    nilai = int(nilai)
+    #nilai = int(nilai)
     response = requests.get(
         f"https://api.frankfurter.app/latest?amount={nilai}&from={dari}&to={ke}")
     nilai_ubah = float(response.json()['rates'][ke])
@@ -11,18 +11,6 @@ def tuker2(dari, ke, nilai):
 
 def tuker(dari, ke, nilai):
 
-    #nilai = int(input("Nilai: "))
-
-    # nilai = int(nilai)
-    # print(nilai)
-    # print(dari)
-    # print(ke)
-    # response = requests.get(
-    #     f"https://api.frankfurter.app/latest?amount={nilai}&from={dari}&to={ke}")
-
-    # nilai_ubah = int(response.json()['rates'][ke])
-    # print(nilai_ubah)
-    # print("")
     nilai_ubah = int(tuker2(dari, ke, nilai))
 
     pecahan = []
@@ -82,7 +70,7 @@ st.title("Penukar Mata Uang")
 
 dari = st.selectbox("Tukar Dari", ['USD', 'IDR', 'AUD', 'CNY', 'INR', 'JPY', 'EUR', 'GBP', 'MYR', 'KRW'])
 ke = st.selectbox("Tukar Ke", ['USD', 'IDR', 'AUD', 'CNY', 'INR', 'JPY', 'EUR', 'GBP', 'MYR', 'KRW'])
-nilai = st.number_input("Jumlah Yang Ingin Ditukar")
+nilai = st.number_input("Jumlah Yang Ingin Ditukar", step=1., format="%.2f")
 
 if st.button("Tukar"):
     nilai_ubah = tuker2(dari, ke, nilai)
