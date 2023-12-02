@@ -2,6 +2,12 @@ import requests
 import streamlit as st
 from collections import Counter
 
+def init_session_state():
+    return st.session_state.setdefault('nilai', 0)
+
+def reset_nilai():
+    st.session_state.nilai = 0
+
 def tuker2(dari, ke, nilai):
     #nilai = int(nilai)
     response = requests.get(
@@ -67,10 +73,47 @@ def tuker(dari, ke, nilai):
 
 
 st.title("Penukar Mata Uang")
-
-dari = st.selectbox("Tukar Dari", ['USD', 'IDR', 'AUD', 'CNY', 'INR', 'JPY', 'EUR', 'GBP', 'MYR', 'KRW'])
+nilai = init_session_state()
+dari = st.selectbox("Tukar Dari", ['USD', 'IDR', 'AUD', 'CNY', 'INR', 'JPY', 'EUR', 'GBP', 'MYR', 'KRW'], on_change=reset_nilai)
 ke = st.selectbox("Tukar Ke", ['USD', 'IDR', 'AUD', 'CNY', 'INR', 'JPY', 'EUR', 'GBP', 'MYR', 'KRW'])
-nilai = st.number_input("Jumlah Yang Ingin Ditukar", step=1., format="%.2f")
+
+# if st.session_state.dari != dari:
+#     st.session_state.nilai = 0
+#     st.session_state.dari = dari
+# else:
+#     st.session_state.dari = dari
+
+st.write("Masukkan Pecahan Uang Anda: ")
+currencies = {
+    'IDR': [100000, 50000, 20000, 10000, 5000, 2000, 1000],
+    'USD': [100, 50, 20, 10, 5, 1],
+    'AUD': [100, 50, 20, 10, 5, 2, 1],
+    'CNY': [100, 50, 20, 10, 5, 1],
+    'INR': [2000, 500, 200, 100, 50, 20, 10, 5, 2],
+    'JPY': [10000, 5000, 2000, 1000],
+    'EUR': [500, 200, 100, 50, 20, 10, 5],
+    'GBP': [50, 20, 10, 5],
+    'MYR': [1000, 500, 200, 100, 50, 20, 10, 5, 1],
+    'KRW': [50000, 10000, 5000, 1000]
+}
+
+
+if dari in currencies:
+    currency_list = currencies[dari]
+    columns = st.columns(len(currency_list))
+
+    for i, value in enumerate(currency_list):
+        with columns[i]:
+            button_label = str(value)
+            button = st.button(button_label)
+            if button:
+                nilai = nilai + int(button_label)
+
+    st.session_state.nilai = nilai
+else:
+    st.write("Invalid currency selected")
+
+st.write(f"Nilai mata uang anda sekarang: {nilai} {dari}")
 
 if st.button("Tukar"):
     nilai_ubah = tuker2(dari, ke, nilai)
@@ -83,4 +126,5 @@ if st.button("Tukar"):
         if count > 1:
             st.text(f"{str(value)} {ke} x{count}")
         else:
-            st.text(f"{str(value)} {ke}")
+            st.text(f"{str(value)} {ke} x1")
+
